@@ -1,0 +1,135 @@
+import os
+import random
+
+# Listas de palavras categorizadas por dificuldade
+palavras_faceis = ["bola", "lua", "pato"]
+palavras_medias = ["estrela", "marciano", "foguete", "jujuba"]
+palavras_dificeis = ["oftamologista", "microscopico", "pirazolona"]
+
+# Função para limpar o terminal
+def limpar_terminal():
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+# Função para exibir o menu inicial
+def menu_inicial():
+    while True:
+        limpar_terminal()
+        print("MENU INICIAL\n")
+        print("(1) Novo Jogo")
+        print("(2) Dificuldade")
+        print("(3) Instruções")
+        print("(4) Sobre")
+        print("(5) Sair")
+        valor = input("O que deseja -> ")
+
+        if valor == "1":
+            novo_jogo()
+        elif valor == "2":
+            opcoes_dificuldade()
+        elif valor == "3":
+            instrucoes()
+        elif valor == "4":
+            sobre()
+        elif valor == "5":
+            sair()
+        else:
+            print("Opção inválida, tente novamente.")
+            input("Pressione Enter para continuar...")
+
+# Variável da dificuldade
+dificuldade_selecionada = "fácil"
+
+# Função para iniciar um novo jogo
+def novo_jogo():
+    limpar_terminal()
+
+    if dificuldade_selecionada == "fácil":
+        palavra = random.choice(palavras_faceis)
+        chances = 7
+    elif dificuldade_selecionada == "médio":
+        palavra = random.choice(palavras_medias)
+        chances = 5
+    else:
+        palavra = random.choice(palavras_dificeis)
+        chances = 3
+
+    letras_do_usuario = []
+    ganhou = False
+
+    while True:
+        limpar_terminal()
+        # Lógica do jogo
+        for letra in palavra:
+            if letra.lower() in letras_do_usuario:
+                print(letra, end=" ")
+            else:
+                print("_", end=" ")
+        print(f"Você tem {chances} chances")
+        letra_tentativa = input("Escolha uma letra: ").lower()
+
+        if letra_tentativa not in letras_do_usuario:
+            letras_do_usuario.append(letra_tentativa)
+            if letra_tentativa.lower() not in palavra.lower():
+                chances -= 1
+
+        ganhou = True
+        for letra in palavra:
+            if letra.lower() not in letras_do_usuario:
+                ganhou = False
+
+        if chances == 0 or ganhou:
+            break
+
+    if ganhou:
+        print(f"Parabéns, você acertou! A palavra era: {palavra}")
+    else:
+        print(f"Você perdeu. A palavra era: {palavra}")
+
+    input("Pressione Enter para voltar ao menu inicial...")
+
+# Função para exibir as opções de dificuldade
+def opcoes_dificuldade():
+    global dificuldade_selecionada
+    limpar_terminal()
+    print("OPÇÕES DE DIFICULDADE")
+    print("(1) Fácil")
+    print("(2) Médio")
+    print("(3) Difícil")
+    dificuldade = input("Escolha a dificuldade -> ")
+
+    if dificuldade == "1":
+        dificuldade_selecionada = "fácil"
+    elif dificuldade == "2":
+        dificuldade_selecionada = "médio"
+    elif dificuldade == "3":
+        dificuldade_selecionada = "difícil"
+    else:
+        print("Opção inválida, selecionando dificuldade padrão (fácil).")
+        dificuldade_selecionada = "fácil"
+
+    input("Dificuldade selecionada! Pressione Enter para voltar ao menu inicial...")
+
+# Função para exibir as instruções do jogo
+def instrucoes():
+    limpar_terminal()
+    print("INSTRUÇÕES")
+    print("Este é um jogo de forca. Tente adivinhar a palavra escolhendo letras.")
+    print("Você tem um número limitado de chances. Boa sorte!")
+    input("Pressione Enter para voltar ao menu inicial...")
+
+# Função para exibir informações sobre o jogo
+def sobre():
+    limpar_terminal()
+    print("SOBRE")
+    print("Este jogo foi desenvolvido para um projeto de programação.")
+    input("Pressione Enter para voltar ao menu inicial...")
+
+# Função para sair do jogo
+def sair():
+    limpar_terminal()
+    print("Obrigado por jogar!")
+    exit()
+
+# Inicializa o menu
+if _name_ == "main":
+    menu_inicial()
